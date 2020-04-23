@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+	{% if page == 'quizz' %}
+		{% if status %}
+			<h1>Hello!!.. {{ user.get_username }} You already Completed the Quizz.</h1>
+			<table>
+				<tr>
+					<th>Question     </th>
+					<th>Your Answer     </th>
+					<th>Correct Answer     </th>
+				</tr>
+			 	{% for data in progress %}
+					<tr>
+						<td>{{ data.question.question }}     </td>
+						<td>{{ data.answer.answer }}     </td>
+						<td>{{ data.correct_answer }}</td>
+					</tr>
+				{% endfor %}
+			</table>
+			<a href="{% url 'logout' %}">Log Out</a>
+		{% else %}
+			<h1>Select the correct Answer and submit for next question</h1>
+			{% if is_question %}
+				{% if start_quizz %}
+					<a href="{% url 'quiz' category_id question_id %}">Start the Quizz</a>
+				{% else %}
+					<form action={% url 'quiz' category_id question_id %} method="post">
+						{% csrf_token %}
+						<h4>{{ question.question }}</h4>
+						{% for ans in question.answer_set.all %}
+						    <input type="radio" name="answer" id="choice{{ forloop.counter }}" value="{{ ans.id }}">
+						    <label for="choice{{ forloop.counter }}">{{ ans.answer }}</label><br>
+						{% endfor %}
+						<input type="submit" value="Submit">
+					</form>
+				{% endif %}
+			{% else %}
+				<h3>No More Questions for attend</h3>
+			{% endif %}
+		{% endif %}
+	{% else %}
+		<h1>Quizz... Completed...</h1>
+		<h2>Your Score is {{ result.correct_answers }} for Quizz category {{ result.category.category }}</h2>
+		<table>
+			<tr>
+				<th>Question     </th>
+				<th>Your Answer     </th>
+				<th>Correct Answer     </th>
+			</tr>
+		 	{% for data in progress %}
+				<tr>
+					<td>{{ data.question.question }}     </td>
+					<td>{{ data.answer.answer }}     </td>
+					<td>{{ data.correct_answer }}</td>
+				</tr>
+			{% endfor %}
+		</table>
+		<a href="{% url 'logout' %}">Log Out</a>
+	{% endif %}
+{% endblock %}

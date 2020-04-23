@@ -1,0 +1,14 @@
+{%  extends "base.html" %}
+
+{% block content %}
+
+
+<h2>Select The Category</h2>
+<ul>
+	{% for data in category_list %}
+	<li><a href="{% url 'quiz' data.id 0 %}">{{ data.category }}</a></li>
+	{% endfor %}
+</ul>
+
+
+{% endblock %}

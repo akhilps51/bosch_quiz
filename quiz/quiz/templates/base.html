@@ -1,0 +1,19 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>My Quiz</title>
+
+</head>
+
+<body>
+{% block header %}
+	<div>
+		{% if user.is_authenticated %}<a href="">{{ user.get_username }}</a> | <a href="{% url 'logout' %}">Log Out</a>{% endif %}
+	</div>
+{% endblock %}
+{% block content %}{% endblock %}
+</body>
+</html>
